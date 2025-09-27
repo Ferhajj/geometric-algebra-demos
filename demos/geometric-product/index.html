@@ -1,1 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometrik Çarpım Demo - Geometrik Cebir Kitabı</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        #visualization {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+        .controls {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .vector-control {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .values {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .value-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+        }
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔷 Geometrik Çarpım Demo</h1>
+            <p class="subtitle">İki vektörün geometrik çarpımının interaktif görselleştirmesi</p>
+        </header>
 
+        <div class="content">
+            <div id="visualization">
+                <div style="text-align: center;">
+                    <h3>🎮 3D Görselleştirme</h3>
+                    <p>Vektörler ve geometrik çarpım bileşenleri burada gösterilecek</p>
+                    <p><em>Three.js entegrasyonu yakında eklenecek</em></p>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="vector-control">
+                    <h3>🎯 Vektör A Kontrolleri</h3>
+                    <label for="a-x">X: <span id="a-x-value">2.0</span></label>
+                    <input type="range" id="a-x" min="-5" max="5" step="0.1" value="2">
+                    
+                    <label for="a-y">Y: <span id="a-y-value">1.0</span></label>
+                    <input type="range" id="a-y" min="-5" max="5" step="0.1" value="1">
+                    
+                    <label for="a-z">Z: <span id="a-z-value">0.0</span></label>
+                    <input type="range" id="a-z" min="-5" max="5" step="0.1" value="0">
+                </div>
+
+                <div class="vector-control">
+                    <h3>🎯 Vektör B Kontrolleri</h3>
+                    <label for="b-x">X: <span id="b-x-value">-1.0</span></label>
+                    <input type="range" id="b-x" min="-5" max="5" step="0.1" value="-1">
+                    
+                    <label for="b-y">Y: <span id="b-y-value">2.0</span></label>
+                    <input type="range" id="b-y" min="-5" max="5" step="0.1" value="2">
+                    
+                    <label for="b-z">Z: <span id="b-z-value">1.0</span></label>
+                    <input type="range" id="b-z" min="-5" max="5" step="0.1" value="1">
+                </div>
+
+                <div class="values">
+                    <h3>📊 Geometrik Çarpım Sonuçları</h3>
+                    <div class="value-item">
+                        <span>Skaler Çarpım (a·b):</span>
+                        <span id="dot-product">0.00</span>
+                    </div>
+                    <div class="value-item">
+                        <span>Dış Çarpım (a∧b) Alanı:</span>
+                        <span id="wedge-area">0.00</span>
+                    </div>
+                    <div class="value-item">
+                        <span>Geometrik Çarpım Normu:</span>
+                        <span id="geom-norm">0.00</span>
+                    </div>
+                    <div class="value-item">
+                        <span>Açı (θ):</span>
+                        <span id="angle">0.00°</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📚 <em>Geometrik Cebir Kitabı</em> - Ferhat Taş</p>
+            <p>🔗 Bu demo açık kaynaklıdır. GitHub'da inceleyin.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Slider değerlerini güncelleme
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                const valueSpan = document.getElementById(this.id + '-value');
+                valueSpan.textContent = parseFloat(this.value).toFixed(1);
+                updateCalculations();
+            });
+        });
+
+        function updateCalculations() {
+            const ax = parseFloat(document.getElementById('a-x').value);
+            const ay = parseFloat(document.getElementById('a-y').value);
+            const az = parseFloat(document.getElementById('a-z').value);
+            
+            const bx = parseFloat(document.getElementById('b-x').value);
+            const by = parseFloat(document.getElementById('b-y').value);
+            const bz = parseFloat(document.getElementById('b-z').value);
+
+            // İç çarpım
+            const dot = ax*bx + ay*by + az*bz;
+            
+            // Dış çarpım alanı (3D'de bivektör normu)
+            const crossX = ay*bz - az*by;
+            const crossY = az*bx - ax*bz;
+            const crossZ = ax*by - ay*bx;
+            const wedgeArea = Math.sqrt(crossX*crossX + crossY*crossY + crossZ*crossZ);
+            
+            // Açı
+            const aMagnitude = Math.sqrt(ax*ax + ay*ay + az*az);
+            const bMagnitude = Math.sqrt(bx*bx + by*by + bz*bz);
+            const angle = aMagnitude && bMagnitude ? 
+                Math.acos(dot / (aMagnitude * bMagnitude)) * 180 / Math.PI : 0;
+
+            // Geometrik çarpım normu
+            const geomNorm = Math.sqrt(dot*dot + wedgeArea*wedgeArea);
+
+            // Sonuçları güncelle
+            document.getElementById('dot-product').textContent = dot.toFixed(2);
+            document.getElementById('wedge-area').textContent = wedgeArea.toFixed(2);
+            document.getElementById('geom-norm').textContent = geomNorm.toFixed(2);
+            document.getElementById('angle').textContent = angle.toFixed(1) + '°';
+        }
+
+        // İlk hesaplamayı yap
+        updateCalculations();
+    </script>
+</body>
+</html>
