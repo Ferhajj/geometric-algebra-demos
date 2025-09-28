@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -44,30 +45,16 @@
         #visualization {
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
-            padding: 20px;
             height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
         }
         .controls {
             background: rgba(255,255,255,0.1);
             border-radius: 15px;
             padding: 20px;
         }
-        .vector-control {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="range"] {
-            width: 100%;
-            margin: 10px 0;
-        }
+        .vector-control { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="range"] { width: 100%; margin: 10px 0; }
         .values {
             background: rgba(0,0,0,0.3);
             padding: 15px;
@@ -75,25 +62,15 @@
             margin-top: 20px;
         }
         .value-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            padding: 5px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 5px;
+            display: flex; justify-content: space-between;
+            margin: 8px 0; padding: 5px;
+            background: rgba(255,255,255,0.1); border-radius: 5px;
         }
         footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
+            text-align: center; margin-top: 30px; padding: 20px;
+            background: rgba(0,0,0,0.3); border-radius: 15px;
         }
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 768px) { .content { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -103,114 +80,143 @@
             <p class="subtitle">İki vektörün geometrik çarpımının interaktif görselleştirmesi</p>
         </header>
 
-        <div class="content">
-            <div id="visualization">
-                <div style="text-align: center;">
-                    <h3>🎮 3D Görselleştirme</h3>
-                    <p>Vektörler ve geometrik çarpım bileşenleri burada gösterilecek</p>
-                    <p><em>Three.js entegrasyonu yakında eklenecek</em></p>
-                </div>
+```
+    <div class="content">
+        <div id="visualization"></div>
+        <div class="controls">
+            <div class="vector-control">
+                <h3>🎯 Vektör A Kontrolleri</h3>
+                <label for="a-x">X: <span id="a-x-value">2.0</span></label>
+                <input type="range" id="a-x" min="-5" max="5" step="0.1" value="2">
+                <label for="a-y">Y: <span id="a-y-value">1.0</span></label>
+                <input type="range" id="a-y" min="-5" max="5" step="0.1" value="1">
+                <label for="a-z">Z: <span id="a-z-value">0.0</span></label>
+                <input type="range" id="a-z" min="-5" max="5" step="0.1" value="0">
             </div>
-            
-            <div class="controls">
-                <div class="vector-control">
-                    <h3>🎯 Vektör A Kontrolleri</h3>
-                    <label for="a-x">X: <span id="a-x-value">2.0</span></label>
-                    <input type="range" id="a-x" min="-5" max="5" step="0.1" value="2">
-                    
-                    <label for="a-y">Y: <span id="a-y-value">1.0</span></label>
-                    <input type="range" id="a-y" min="-5" max="5" step="0.1" value="1">
-                    
-                    <label for="a-z">Z: <span id="a-z-value">0.0</span></label>
-                    <input type="range" id="a-z" min="-5" max="5" step="0.1" value="0">
-                </div>
-
-                <div class="vector-control">
-                    <h3>🎯 Vektör B Kontrolleri</h3>
-                    <label for="b-x">X: <span id="b-x-value">-1.0</span></label>
-                    <input type="range" id="b-x" min="-5" max="5" step="0.1" value="-1">
-                    
-                    <label for="b-y">Y: <span id="b-y-value">2.0</span></label>
-                    <input type="range" id="b-y" min="-5" max="5" step="0.1" value="2">
-                    
-                    <label for="b-z">Z: <span id="b-z-value">1.0</span></label>
-                    <input type="range" id="b-z" min="-5" max="5" step="0.1" value="1">
-                </div>
-
-                <div class="values">
-                    <h3>📊 Geometrik Çarpım Sonuçları</h3>
-                    <div class="value-item">
-                        <span>Skaler Çarpım (a·b):</span>
-                        <span id="dot-product">0.00</span>
-                    </div>
-                    <div class="value-item">
-                        <span>Dış Çarpım (a∧b) Alanı:</span>
-                        <span id="wedge-area">0.00</span>
-                    </div>
-                    <div class="value-item">
-                        <span>Geometrik Çarpım Normu:</span>
-                        <span id="geom-norm">0.00</span>
-                    </div>
-                    <div class="value-item">
-                        <span>Açı (θ):</span>
-                        <span id="angle">0.00°</span>
-                    </div>
-                </div>
+            <div class="vector-control">
+                <h3>🎯 Vektör B Kontrolleri</h3>
+                <label for="b-x">X: <span id="b-x-value">-1.0</span></label>
+                <input type="range" id="b-x" min="-5" max="5" step="0.1" value="-1">
+                <label for="b-y">Y: <span id="b-y-value">2.0</span></label>
+                <input type="range" id="b-y" min="-5" max="5" step="0.1" value="2">
+                <label for="b-z">Z: <span id="b-z-value">1.0</span></label>
+                <input type="range" id="b-z" min="-5" max="5" step="0.1" value="1">
+            </div>
+            <div class="values">
+                <h3>📊 Geometrik Çarpım Sonuçları</h3>
+                <div class="value-item"><span>Skaler Çarpım (a·b):</span><span id="dot-product">0.00</span></div>
+                <div class="value-item"><span>Dış Çarpım (a∧b) Alanı:</span><span id="wedge-area">0.00</span></div>
+                <div class="value-item"><span>Geometrik Çarpım Normu:</span><span id="geom-norm">0.00</span></div>
+                <div class="value-item"><span>Açı (θ):</span><span id="angle">0.00°</span></div>
             </div>
         </div>
-
-        <footer>
-            <p>📚 <em>Geometrik Cebir Kitabı</em> - Ferhat Taş</p>
-            <p>🔗 Bu demo açık kaynaklıdır. GitHub'da inceleyin.</p>
-        </footer>
     </div>
 
-    <script>
-        // Slider değerlerini güncelleme
-        document.querySelectorAll('input[type="range"]').forEach(slider => {
-            slider.addEventListener('input', function() {
-                const valueSpan = document.getElementById(this.id + '-value');
-                valueSpan.textContent = parseFloat(this.value).toFixed(1);
-                updateCalculations();
-            });
+    <footer>
+        <p>📚 <em>Geometrik Cebir Kitabı</em> - Ferhat Taş</p>
+    </footer>
+</div>
+
+<script>
+    // Sahne kurulumu
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x222222);
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+    camera.position.set(6, 6, 6);
+    const renderer = new THREE.WebGLRenderer({antialias: true});
+    const vizDiv = document.getElementById('visualization');
+    renderer.setSize(vizDiv.clientWidth, vizDiv.clientHeight);
+    vizDiv.appendChild(renderer.domElement);
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    scene.add(new THREE.AmbientLight(0x555555));
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(5, 10, 7); scene.add(light);
+
+    // Eksenler
+    scene.add(new THREE.AxesHelper(5));
+
+    // Oklar
+    const arrowA = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), new THREE.Vector3(0,0,0), 1, 0xff4444);
+    const arrowB = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), 1, 0x4444ff);
+    const arrowCross = new THREE.ArrowHelper(new THREE.Vector3(0,0,1), new THREE.Vector3(0,0,0), 1, 0x44ff44);
+    scene.add(arrowA, arrowB, arrowCross);
+
+    // Paralelkenar alanı
+    const planeMaterial = new THREE.MeshBasicMaterial({color: 0x44ff44, opacity: 0.4, transparent: true, side: THREE.DoubleSide});
+    let parallelogramMesh = null;
+
+    function updateParallelogram(vecA, vecB) {
+        if (parallelogramMesh) scene.remove(parallelogramMesh);
+        const geometry = new THREE.BufferGeometry();
+        const vertices = new Float32Array([
+            0,0,0,
+            vecA.x, vecA.y, vecA.z,
+            vecA.x+vecB.x, vecA.y+vecB.y, vecA.z+vecB.z,
+            vecB.x, vecB.y, vecB.z
+        ]);
+        geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+        geometry.setIndex([0,1,2, 0,2,3]);
+        parallelogramMesh = new THREE.Mesh(geometry, planeMaterial);
+        scene.add(parallelogramMesh);
+    }
+
+    function updateVectors(ax, ay, az, bx, by, bz) {
+        const vecA = new THREE.Vector3(ax, ay, az);
+        const vecB = new THREE.Vector3(bx, by, bz);
+        const cross = new THREE.Vector3().crossVectors(vecA, vecB);
+
+        arrowA.setDirection(vecA.clone().normalize()); arrowA.setLength(vecA.length());
+        arrowB.setDirection(vecB.clone().normalize()); arrowB.setLength(vecB.length());
+        if (cross.length() > 0) { arrowCross.setDirection(cross.clone().normalize()); arrowCross.setLength(cross.length()/3); }
+        else { arrowCross.setLength(0.0001); }
+
+        updateParallelogram(vecA, vecB);
+    }
+
+    function updateCalculations() {
+        const ax = parseFloat(document.getElementById('a-x').value);
+        const ay = parseFloat(document.getElementById('a-y').value);
+        const az = parseFloat(document.getElementById('a-z').value);
+        const bx = parseFloat(document.getElementById('b-x').value);
+        const by = parseFloat(document.getElementById('b-y').value);
+        const bz = parseFloat(document.getElementById('b-z').value);
+
+        const dot = ax*bx + ay*by + az*bz;
+        const crossX = ay*bz - az*by;
+        const crossY = az*bx - ax*bz;
+        const crossZ = ax*by - ay*bx;
+        const wedgeArea = Math.sqrt(crossX**2 + crossY**2 + crossZ**2);
+
+        const aMag = Math.sqrt(ax**2 + ay**2 + az**2);
+        const bMag = Math.sqrt(bx**2 + by**2 + bz**2);
+        const angle = aMag && bMag ? Math.acos(dot/(aMag*bMag))*180/Math.PI : 0;
+        const geomNorm = Math.sqrt(dot**2 + wedgeArea**2);
+
+        document.getElementById('dot-product').textContent = dot.toFixed(2);
+        document.getElementById('wedge-area').textContent = wedgeArea.toFixed(2);
+        document.getElementById('geom-norm').textContent = geomNorm.toFixed(2);
+        document.getElementById('angle').textContent = angle.toFixed(1) + '°';
+
+        updateVectors(ax, ay, az, bx, by, bz);
+    }
+
+    document.querySelectorAll('input[type="range"]').forEach(slider=>{
+        slider.addEventListener('input', function(){
+            document.getElementById(this.id + '-value').textContent = parseFloat(this.value).toFixed(1);
+            updateCalculations();
         });
+    });
 
-        function updateCalculations() {
-            const ax = parseFloat(document.getElementById('a-x').value);
-            const ay = parseFloat(document.getElementById('a-y').value);
-            const az = parseFloat(document.getElementById('a-z').value);
-            
-            const bx = parseFloat(document.getElementById('b-x').value);
-            const by = parseFloat(document.getElementById('b-y').value);
-            const bz = parseFloat(document.getElementById('b-z').value);
+    updateCalculations();
+    (function animate(){ requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
 
-            // İç çarpım
-            const dot = ax*bx + ay*by + az*bz;
-            
-            // Dış çarpım alanı (3D'de bivektör normu)
-            const crossX = ay*bz - az*by;
-            const crossY = az*bx - ax*bz;
-            const crossZ = ax*by - ay*bx;
-            const wedgeArea = Math.sqrt(crossX*crossX + crossY*crossY + crossZ*crossZ);
-            
-            // Açı
-            const aMagnitude = Math.sqrt(ax*ax + ay*ay + az*az);
-            const bMagnitude = Math.sqrt(bx*bx + by*by + bz*bz);
-            const angle = aMagnitude && bMagnitude ? 
-                Math.acos(dot / (aMagnitude * bMagnitude)) * 180 / Math.PI : 0;
+    window.addEventListener('resize', ()=>{
+        renderer.setSize(vizDiv.clientWidth, vizDiv.clientHeight);
+        camera.aspect = vizDiv.clientWidth / vizDiv.clientHeight;
+        camera.updateProjectionMatrix();
+    });
+</script>
+```
 
-            // Geometrik çarpım normu
-            const geomNorm = Math.sqrt(dot*dot + wedgeArea*wedgeArea);
-
-            // Sonuçları güncelle
-            document.getElementById('dot-product').textContent = dot.toFixed(2);
-            document.getElementById('wedge-area').textContent = wedgeArea.toFixed(2);
-            document.getElementById('geom-norm').textContent = geomNorm.toFixed(2);
-            document.getElementById('angle').textContent = angle.toFixed(1) + '°';
-        }
-
-        // İlk hesaplamayı yap
-        updateCalculations();
-    </script>
 </body>
 </html>
